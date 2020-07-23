@@ -39,7 +39,7 @@ class ParticleController:
         # Get Norm of diff vector
         newFitness = np.linalg.norm(diff)
         # Save it as best position if its better than previous best
-        if newFitness < model._fitness or model._fitness is None:
+        if newFitness < model._fitness or model._fitness == -1:
             model._bestPosition = np.copy(model._position)
             model._fitness = newFitness
 
@@ -156,7 +156,7 @@ class TSPParticleController(BinaryParticleController):
         if self.validateNumOfNodes(curPath, self._solution._numOfCities):
             try:
                 curPath = self.orderSolution(curPath, self._solution._startNode)
-                if curWeight < model._fitness or model._fitness is None:
+                if curWeight < model._fitness or model._fitness == -1:
                     model._fitness = curWeight
                     model._bestPosition = np.copy(model._position)
                     #self._solution._bestPath = curPath[:]
@@ -230,12 +230,17 @@ class SwarmController:
         self._neighbourhoodController = NeighbourhoodController()
     
     def initSwarm(self, swarm, topology = "gbest" , nParticles = 1, dimensions = 1):
-        # Create Swarm
+        # Create a swarm by initialising All particles through particle Controller and initialising Neighbourhoods through neighbourhood controller
         for i in range(nParticles):
             newParticle = ParticleModel()
+            # for TSPParticleController there is no initParticle so its base class method gets called
             self._particleController.initParticle(newParticle, dimensions)
-            swarm._particles.append(newParticle)    
+            # add the new newly created particle to the swarm
+            swarm._particles.append(newParticle)
+
+        # we initialise the Neighbourhoods of the swarm too
         swarm._neighbourhoods = self._neighbourhoodController.initNeighbourhoods(swarm, topology)
+        # update the bestPosition of the swarm after we have the initial particle and neighbourhood data
         self.updateSwarmBestPosition(swarm)
             
 
@@ -243,7 +248,7 @@ class SwarmController:
         # Find swarm best position and save it in swarm
         for nb in swarm._neighbourhoods:
             self._neighbourhoodController.updateNeighbourhoodBestPosition(nb)
-            if swarm._bestPositionFitness is None or nb._bestPositionFitness < swarm._bestPositionFitness:
+            if swarm._bestPositionFitness == -1 or nb._bestPositionFitness < swarm._bestPositionFitness:
                 swarm._bestPositionFitness = nb._bestPositionFitness
                 swarm._bestPosition =  np.copy(nb._bestPosition)
     
@@ -286,7 +291,7 @@ class NeighbourhoodController:
     def updateNeighbourhoodBestPosition(self, model):
         # Find the best one in the NB
         for curParticle in model._particles:
-            if model._bestPositionFitness is None or (curParticle._fitness < model._bestPositionFitness and curParticle._fitness is not None):
+            if model._bestPositionFitness == -1 or (curParticle._fitness < model._bestPositionFitness and curParticle._fitness != -1):
                 model._bestPositionFitness = curParticle._fitness
                 model._bestPosition = np.copy(curParticle._bestPosition)
 

@@ -10,8 +10,8 @@ from PSOProblems import *
 
 
 #cpsoProblem 	= CPSOProblem("lbest")
-cpsoProblem     = CPSOProblem("gbest")
-cpsoProblem.plotResults()
+# cpsoProblem     = CPSOProblem("gbest")
+# cpsoProblem.plotResults()
 
 #cbpsoProblem 	= CBPSOProblem("lbest")
 #cbpsoProblem.plotResults()
@@ -20,4 +20,4 @@ cpsoProblem.plotResults()
 
 #knapsackProblem = BPSOKnapsackProblem()
 
-#tspProblem      = BPSOTSPProblem()
+tspProblem      = BPSOTSPProblem()

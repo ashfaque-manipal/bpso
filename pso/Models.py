@@ -23,39 +23,39 @@ class ParticleModel:
     _velocity       = None
     _bestPosition   = None
     _nbBestPosition = None
-    _fitness        = None
+    _fitness        = -1
 
     def __init__(self):
         self._position       = None
         self._velocity       = None
         self._bestPosition   = None
         self._nbBestPosition = None
-        self._fitness        = None
+        self._fitness        = -1
 
 #---- Swarm representation
 class SwarmModel:
     _particles              = None
     _neighbourhoods         = None
     _bestPosition           = None
-    _bestPositionFitness    = None
+    _bestPositionFitness    = -1
     
     def __init__(self):
         self._particles = []
         self._neighbourhoods        = None
         self._bestPosition          = None
-        self._bestPositionFitness   = None
+        self._bestPositionFitness   = -1
         
 
 #---- Neighbourhood representation    
 class NeighbourhoodModel:
     _particles              = []
     _bestPosition           = None
-    _bestPositionFitness    = None
+    _bestPositionFitness    = -1
     
     def __init__(self, particles):
         self._particles             = particles
         self._bestPosition          = None
-        self._bestPositionFitness   = None
+        self._bestPositionFitness   = -1
 
 
 #===============================================================================
